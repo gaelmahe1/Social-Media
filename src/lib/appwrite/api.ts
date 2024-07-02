@@ -1,5 +1,5 @@
 import { ID, Query } from "appwrite";
-import { INewUser } from "@/types";
+import { INewPost, INewUser } from "@/types";
 import { account, appwriteConfig, avatars, databases } from "./config";
 
 export async function createUserAccount(user: INewUser) {
@@ -91,5 +91,13 @@ export async function signInAccount(user: { email: string; password: string }) {
       return session;
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  export async function createPost(post: INewPost) {
+    try {
+      
+    } catch (error) {
+      
     }
   }
