@@ -11,6 +11,7 @@ import { PostValidation } from "@/lib/validation"
 import { Models } from "appwrite"
 import { useUserContext } from "@/context/AuthContext"
 import { useToast } from "../ui/use-toast"
+import { useCreatePost } from "@/lib/react-query/queriesAndMutations"
 
 type PostFormProps ={
     post ?: Models.Document;
