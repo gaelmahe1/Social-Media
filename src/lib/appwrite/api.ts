@@ -1,6 +1,6 @@
 import { ID, Query } from "appwrite";
 import { INewPost, INewUser } from "@/types";
-import { account, appwriteConfig, avatars, databases } from "./config";
+import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
 export async function createUserAccount(user: INewUser) {
 try {
@@ -96,8 +96,40 @@ export async function signInAccount(user: { email: string; password: string }) {
 
   export async function createPost(post: INewPost) {
     try {
-      
+      // Upload image to file storage
+      const uploadedFile = await uploadFile(post.file[0]);
+      if(!uploadedFile) throw Error;
+      // Get file Url
+      const fileUrl = getFilePreview(uploadedFile.$id);
     } catch (error) {
-      
+      console.error('image was not uploaded');
+    }
+  }
+
+  export async function uploadFile (file: File) {
+    try {
+      const uploadedFile = await storage.createFile(
+        appwriteConfig.storageId,
+        ID.unique(),
+        file
+      );
+      return uploadedFile;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  export function getFilePreview(fileId: string) {
+    try {
+      const fileUrl = storage.getFilePreview(
+        appwriteConfig.storageId,
+        fileId,
+        2000,
+        2000,
+        "top",
+        100
+      );
+    } catch (error) {
+      console.log(error);
     }
   }
