@@ -1,4 +1,4 @@
-import { ID, Query, ImageGravity } from "appwrite";
+import { ID, Query, } from "appwrite";
 import { INewPost, INewUser } from "@/types";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
@@ -96,19 +96,22 @@ export async function signInAccount(user: { email: string; password: string }) {
 
   export async function createPost(post: INewPost) {
     try {
-      // Upload image to file storage
+      // Upload file to appwrite storage
       const uploadedFile = await uploadFile(post.file[0]);
-      if(!uploadedFile) throw Error;
-      // Get file Url
+  
+      if (!uploadedFile) throw Error;
+  
+      // Get file url
       const fileUrl = getFilePreview(uploadedFile.$id);
-      if(!fileUrl) {
-        deleteFile(uploadedFile.$id);
+      if (!fileUrl) {
+        await deleteFile(uploadedFile.$id);
         throw Error;
       }
-      // Convert tags into an array
-      const tags = post.tags?.replace(/ /g,'').split(',') || [];
-
-      // Save post to database
+  
+      // Convert tags into array
+      const tags = post.tags?.replace(/ /g, "").split(",") || [];
+  
+      // Create post
       const newPost = await databases.createDocument(
         appwriteConfig.databaseId,
         appwriteConfig.postCollectionId,
@@ -121,15 +124,16 @@ export async function signInAccount(user: { email: string; password: string }) {
           location: post.location,
           tags: tags,
         }
-      )
-      if(!newPost) {
-        await deleteFile(uploadedFile.$id)
+      );
+  
+      if (!newPost) {
+        await deleteFile(uploadedFile.$id);
         throw Error;
       }
-
+  
       return newPost;
     } catch (error) {
-      console.error('image was not uploaded');
+      console.log(error);
     }
   }
 
@@ -146,16 +150,19 @@ export async function signInAccount(user: { email: string; password: string }) {
     }
   }
 
-  export async function getFilePreview(fileId: string) {
+  export function getFilePreview(fileId: string) {
     try {
       const fileUrl = storage.getFilePreview(
         appwriteConfig.storageId,
         fileId,
         2000,
         2000,
-        ImageGravity.Top,
+        "top",
         100
       );
+  
+      if (!fileUrl) throw Error;
+  
       return fileUrl;
     } catch (error) {
       console.log(error);
