@@ -1,3 +1,4 @@
+import PostCard from "@/components/shared/PostCard";
 import { useGetRecentPosts } from "@/lib/react-query/queriesAndMutations";
 import { Models } from "appwrite";
 import { Loader } from "lucide-react";
@@ -15,7 +16,7 @@ const { data: posts, isLoading: isPostLoading, isError: isErrorPosts} = useGetRe
         ): 
         <ul className="flex flex-col flex-1 gap-9 w-full">
           {posts?.documents.map((post: Models.Document) =>(
-            <li>{post.caption}</li>
+            <PostCard post={post} />
           ))}
         </ul>
         }
