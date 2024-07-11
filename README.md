@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/badge/-React_Query-black?style=for-the-badge&logoColor=white&logo=reactquery&color=FF4154" alt="reactquery" />
     <img src="https://img.shields.io/badge/-Typescript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6" alt="typescript" />
   </div>
-
+</div>
   <h3 align="center">A Social Media Application</h3>
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
